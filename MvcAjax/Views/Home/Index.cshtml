@@ -1,0 +1,58 @@
+﻿@{
+	ViewData["Title"] = "Home Page";
+}
+@model int
+
+<div class="text-center">
+	<h1 class="display-4">Welcome</h1>
+	<p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+<h1 id="Result">@Model</h1>
+
+<input type="button" value="Arttır with Javascript" onclick="Arttir()" />
+
+<input type="button" value="Arttır with Jquery" onclick="ArttirJquery()" />
+
+<form asp-action="Arttir" data-ajax="true" data-ajax-success="SuccessResponse">
+	<input type="submit" value="Arttır with form" />
+</form>
+
+
+<script>
+
+	function Arttir() {
+
+		var req = new XMLHttpRequest();
+		req.open("POST", "Home/Arttir"); // request type ve Action parametreleri
+		// requesti dinler, request aşamalrında çalışır.
+		req.onreadystatechange = function() {
+
+			console.log(req.readyState); // => readyState => request aşamalarını verir..
+
+			if (req.readyState == 4) {
+				document.getElementById("Result").innerHTML = req.responseText;
+			}
+		}
+
+		req.send(); // request yap.....
+	}
+
+
+	function ArttirJquery() {
+		$.ajax({
+			type: "POST",
+			url: "Home/Arttir",
+			success: function(r) { // rsponse bu functiona parametre ile gelir. o yüzden bu funciona parametre tanımlanmalıdır...
+
+				$("#Result").html(r);
+
+			}
+		});
+	}
+
+	function SuccessResponse(r) {
+        $("#Result").html(r);
+	}
+
+</script>
